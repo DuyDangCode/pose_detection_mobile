@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RealtimeProcessingActivity">
+
+    <RelativeLayout
+        android:layout_width="409dp"
+        android:layout_height="544dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/video_background"
+        android:gravity="center">
+        <TextureView
+            android:layout_width="405dp"
+            android:layout_height="540dp"
+            android:id="@+id/texttureView"/>
+        <ImageView
+            android:layout_width="405dp"
+            android:layout_height="540dp"
+            android:id="@+id/image"/>
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/images_button"
+        android:src="@drawable/baseline_image_50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="55dp"
+        android:layout_marginStart="90dp"
+        />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/capture_button"
+        android:src="@drawable/baseline_camera_24"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/change_camera_button"
+        android:src="@drawable/baseline_cameraswitch_24"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="55dp"
+        android:layout_marginEnd="90dp"
+        />
+
+
+</RelativeLayout>
