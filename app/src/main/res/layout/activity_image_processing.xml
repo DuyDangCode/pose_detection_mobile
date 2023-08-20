@@ -6,7 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".ImageProcessingActivity">
 
+    <RelativeLayout
+        android:layout_width="409dp"
+        android:layout_height="544dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/video_background"
+        android:gravity="center">
+        <TextureView
+            android:layout_width="405dp"
+            android:layout_height="540dp"
+            android:id="@+id/texttureView"/>
+        <ImageView
+            android:layout_width="405dp"
+            android:layout_height="540dp"
+            android:id="@+id/image"/>
+    </RelativeLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not match"
+        android:id="@+id/result"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="90dp"
+        android:textColor="@color/red"
+        android:visibility="gone"/>
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/lock_button"
+        android:src="@drawable/baseline_lock_person_50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="35dp"
+        android:layout_marginStart="90dp"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/open_button"
+        android:src="@drawable/baseline_lock_open_50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="35dp"
+        android:layout_marginStart="90dp"
+
+        />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/capture_button"
+        android:src="@drawable/baseline_camera_24"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/change_camera_button"
+        android:src="@drawable/baseline_cameraswitch_24"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="90dp"
+        />
 
 
 </RelativeLayout>
