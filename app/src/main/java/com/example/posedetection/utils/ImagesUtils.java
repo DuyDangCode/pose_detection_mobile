@@ -1,9 +1,11 @@
 package com.example.posedetection.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Environment;
 import android.util.Log;
 
@@ -12,14 +14,18 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.posedetection.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class ImagesUtils {
 
-    public boolean capture(Bitmap bitmap){
+    public boolean capture(Bitmap bitmap, Bitmap original){
         try {
             Date currentTime = Calendar.getInstance().getTime();
             String root = Environment.getExternalStoragePublicDirectory(
@@ -27,14 +33,22 @@ public class ImagesUtils {
             File myDir = new File(root + "/pose-detection-images");
             myDir.mkdirs();
             String fname = "image-" + currentTime.getTime() + ".jpg";
+            String fname2 = "image-og-" + currentTime.getTime() + ".jpg";
             File file = new File(myDir, fname);
+            File file2 = new File(myDir, fname2);
 
             FileOutputStream out = new FileOutputStream(file);
+            FileOutputStream out2 = new FileOutputStream(file2);
 
             Bitmap bm = bitmap;
             bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
+
+            Bitmap bm2 = original;
+            bm2.compress(Bitmap.CompressFormat.JPEG, 100, out2);
+            out2.flush();
+            out2.close();
 
             return true;
 
@@ -340,9 +354,11 @@ public class ImagesUtils {
     public Bitmap drawPose(Bitmap bitmap, float[] outputFeature0){
         Paint paint = new Paint();
         Paint paint2 = new Paint();
+        //Paint paint3 = new Paint();
 
         paint.setColor(Color.RED);
         paint2.setColor(Color.BLUE);
+        //paint3.setColor(Color.RED);
 
         Bitmap mutable = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(mutable);
@@ -350,12 +366,27 @@ public class ImagesUtils {
         float w = bitmap.getWidth();
         int x = 0;
 
+        //9 10 11   12 13 14
+
+//        if(outputFeature0[2] > 0.45){
+//            double radius = Math.sqrt((outputFeature0[9] - outputFeature0[12]) * h *(outputFeature0[9] - outputFeature0[12])  * h + (outputFeature0[10] - outputFeature0[13])  * w *(outputFeature0[10] - outputFeature0[13])  * w );
+//
+//            Log.i("Radius", String.valueOf(radius));
+//
+////            float left =
+//
+//
+//            RectF rectF = new RectF(outputFeature0[1] * w, outputFeature0[0] * h, (float)radius, (float)radius);
+//            canvas.drawOval(rectF, paint3);
+//        }
+
         while(x <= 49){
             if(outputFeature0[x+2] > 0.45 ){
                 canvas.drawCircle(outputFeature0[x+1] * w, outputFeature0[x] * h, 10f, paint);
             }
             x += 3;
         }
+
 
 
 //                canvas.drawLine(outputFeature0[4], outputFeature0[3], outputFeature0[7], outputFeature0[6], paint);
@@ -472,6 +503,36 @@ public class ImagesUtils {
 
         canvas.drawLines(lines, paint2);
         return mutable;
+    }
+
+    public Bitmap loadImage(String path){
+
+        try {
+            //File file = new File(path, "profile.jpg");
+            File file = new File(path);
+            return BitmapFactory.decodeStream(new FileInputStream(file));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+    public List<Bitmap> loadImages(String path){
+        List<Bitmap> bitmaps = new ArrayList<>();
+        File f = new File(path);
+        File[] files = f.listFiles();
+        //Log.i("Number of images: ", String.valueOf(files.length));
+        for (int i=0; i < 5; i++)
+        {
+            bitmaps.add(loadImage(files[i].getPath()));
+            Log.i("Load image", "success");
+        }
+
+        return bitmaps;
     }
 
 }

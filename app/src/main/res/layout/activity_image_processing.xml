@@ -81,5 +81,18 @@
         android:layout_marginEnd="90dp"
         />
 
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/zoomX2"
+        android:gravity="center"
+        android:text="x2"
+        android:background="@drawable/zoom_button_background"
+        android:textSize="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="30dp"/>
+
 
 </RelativeLayout>

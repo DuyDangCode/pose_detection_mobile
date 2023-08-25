@@ -8,10 +8,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
@@ -62,6 +64,8 @@ public class ImageProcessingActivity extends AppCompatActivity {
     private Bitmap mutable;
     private float[] outputFeature0;
     private float[] outputFeatureLock;
+    private TextView zoomX2;
+    private float valueZoom;
 
     private boolean isLock;
     @Override
@@ -75,6 +79,7 @@ public class ImageProcessingActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         isLock = false;
+        valueZoom = 1.0f;
 
         imageProcessor = new ImageProcessor.Builder().add(new ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR)).build();
         imagesUtils = new ImagesUtils();
@@ -94,6 +99,22 @@ public class ImageProcessingActivity extends AppCompatActivity {
         result = findViewById(R.id.result);
 
 
+        zoomX2 = findViewById(R.id.zoomX2);
+        zoomX2.setOnClickListener(v->{
+            try {
+                if(valueZoom == 1){
+                    zoomX2.setTextColor(Color.BLACK);
+                    valueZoom = 2.0f;
+                    openCamera();
+                }else{
+                    zoomX2.setTextColor(Color.GRAY);
+                    valueZoom = 1.0f;
+                    openCamera();
+                }
+            } catch (CameraAccessException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         cameraBtn.setOnClickListener(v->{
             if(typeCamera == 1){
@@ -193,6 +214,8 @@ public class ImageProcessingActivity extends AppCompatActivity {
             public void onOpened(@NonNull CameraDevice cameraDevice) {
                 try {
                     CaptureRequest.Builder captureRequest = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                    if(valueZoom > 1)
+                        captureRequest.set(CaptureRequest.SCALER_CROP_REGION, zoom());
                     Surface surface = new Surface(textureView.getSurfaceTexture());
                     captureRequest.addTarget(surface);
                     List<Surface> list = new ArrayList<Surface>();
@@ -288,6 +311,50 @@ public class ImageProcessingActivity extends AppCompatActivity {
         }
 
         return  result;
+    }
+
+    private Rect zoom(){
+
+        Rect zoomRect;
+        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
+        try {
+            CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraManager.getCameraIdList()[typeCamera]);
+            float maxZoom = characteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM);
+            Rect sensorRect = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
+
+            if (maxZoom == 0 || sensorRect == null) {
+
+                return null;
+            }
+
+            float currentZoom = 1.0f;
+
+
+            if (currentZoom < maxZoom) {
+                int centerX = sensorRect.centerX();
+                int centerY = sensorRect.centerY();
+                int deltaX = (int) ((0.5f * sensorRect.width() / currentZoom) * (1.0f - 1.0f / valueZoom));
+                int deltaY = (int) ((0.5f * sensorRect.height() / currentZoom) * (1.0f - 1.0f / valueZoom));
+
+                zoomRect = new Rect(
+                        centerX - deltaX,
+                        centerY - deltaY,
+                        centerX + deltaX,
+                        centerY + deltaY
+                );
+            } else {
+
+                return null;
+            }
+            return zoomRect;
+
+
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
 }

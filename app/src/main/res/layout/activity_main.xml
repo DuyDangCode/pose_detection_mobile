@@ -16,40 +16,61 @@
 <!--    </RelativeLayout>-->
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-
+        android:gravity="center"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gallery_button"
+                android:src="@drawable/baseline_image_50"
+                />
+            
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_processing_button"
+                android:src="@drawable/baseline_camera_alt_50"
+                />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/realtime_processing_button"
+                android:src="@drawable/baseline_control_camera_50"/>
+        </LinearLayout>
+
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:text="Video"
-            android:id="@+id/video_processing_button"
-            android:background="@drawable/button_background"
-            app:backgroundTint="@null"
-            android:layout_marginBottom="10dp"/>
-
-
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="Image"
-            android:id="@+id/image_processing_button"
-            android:background="@drawable/button_background"
-            android:layout_marginBottom="10dp"
-            app:backgroundTint="@null" />
-
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="Real time"
-            android:id="@+id/realtime_processing_button"
+            android:text="Chill"
+            android:id="@+id/donate"
             app:backgroundTint="@null"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_background"/>
+
+
+
+
     </LinearLayout>
 
 
