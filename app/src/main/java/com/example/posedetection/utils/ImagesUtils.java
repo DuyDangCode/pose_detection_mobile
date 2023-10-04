@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.core.content.res.ResourcesCompat;
 
@@ -25,6 +26,19 @@ import java.util.Random;
 
 public class ImagesUtils {
 
+    private double accuracy;
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public ImagesUtils() {
+        accuracy = 0.45;
+    }
+
+    public ImagesUtils(double accuracy) {
+        this.accuracy = accuracy;
+    }
     public boolean capture(Bitmap bitmap, Bitmap original){
         try {
             Date currentTime = Calendar.getInstance().getTime();
@@ -76,7 +90,7 @@ public class ImagesUtils {
         int x = 0;
 
         while(x <= 49){
-            if(outputFeature0[x+2] > 0.45 ){
+            if(outputFeature0[x+2] > accuracy ){
                 canvas.drawCircle(outputFeature0[x+1] * w, outputFeature0[x] * h, 10f, paint);
             }
             x += 3;
@@ -84,7 +98,7 @@ public class ImagesUtils {
 
         float[] lines = new float[48];
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[20] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[20] > accuracy){
             lines[0] = outputFeature0[16] * w;
             lines[1] = outputFeature0[15] * h;
             lines[2] = outputFeature0[19] * w;
@@ -92,77 +106,77 @@ public class ImagesUtils {
         }
 
 
-        if(outputFeature0[20] > 0.45 && outputFeature0[26] > 0.45){
+        if(outputFeature0[20] > accuracy && outputFeature0[26] > accuracy){
             lines[4] = outputFeature0[19] * w;
             lines[5] = outputFeature0[18] * h;
             lines[6] = outputFeature0[25] * w;
             lines[7] = outputFeature0[24] * h;
         }
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[23] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[23] > accuracy){
             lines[8] = outputFeature0[16] * w;
             lines[9] = outputFeature0[15] * h;
             lines[10] = outputFeature0[22] * w;
             lines[11] = outputFeature0[21] * h;
         }
 
-        if(outputFeature0[23] > 0.45 && outputFeature0[29] > 0.45){
+        if(outputFeature0[23] > accuracy && outputFeature0[29] > accuracy){
             lines[12] = outputFeature0[22] * w;
             lines[13] = outputFeature0[21] * h;
             lines[14] = outputFeature0[28] * w;
             lines[15] = outputFeature0[27] * h;
         }
 
-        if(outputFeature0[26] > 0.45 && outputFeature0[32] > 0.45){
+        if(outputFeature0[26] > accuracy && outputFeature0[32] > accuracy){
             lines[16] = outputFeature0[25] * w;
             lines[17] = outputFeature0[24] * h;
             lines[18] = outputFeature0[31] * w;
             lines[19] = outputFeature0[30] * h;
         }
 
-        if(outputFeature0[35] > 0.45 && outputFeature0[38] > 0.45){
+        if(outputFeature0[35] > accuracy && outputFeature0[38] > accuracy){
             lines[20] = outputFeature0[34] * w;
             lines[21] = outputFeature0[33] * h;
             lines[22] = outputFeature0[37] * w;
             lines[23] = outputFeature0[36] * h;
         }
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[35] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[35] > accuracy){
             lines[24] = outputFeature0[16] * w;
             lines[25] = outputFeature0[15] * h;
             lines[26] = outputFeature0[34] * w;
             lines[27] = outputFeature0[33] * h;
         }
 
-        if(outputFeature0[20] > 0.45 && outputFeature0[38] > 0.45){
+        if(outputFeature0[20] > accuracy && outputFeature0[38] > accuracy){
             lines[28] = outputFeature0[19] * w;
             lines[29] = outputFeature0[18] * h;
             lines[30] = outputFeature0[37] * w;
             lines[31] = outputFeature0[36] * h;
         }
 
-        if(outputFeature0[35] > 0.45 && outputFeature0[41] > 0.45){
+        if(outputFeature0[35] > accuracy && outputFeature0[41] > accuracy){
             lines[32] = outputFeature0[34] * w;
             lines[33] = outputFeature0[33] * h;
             lines[34] = outputFeature0[40] * w;
             lines[35] = outputFeature0[39] * h;
         }
 
-        if(outputFeature0[41] > 0.45 && outputFeature0[47] > 0.45){
+        if(outputFeature0[41] > accuracy && outputFeature0[47] > accuracy){
             lines[36] = outputFeature0[40] * w;
             lines[37] = outputFeature0[39] * h;
             lines[38] = outputFeature0[46] * w;
             lines[39] = outputFeature0[45] * h;
         }
 
-        if(outputFeature0[38] > 0.45 && outputFeature0[44] > 0.45){
+        if(outputFeature0[38] > accuracy && outputFeature0[44] > accuracy){
             lines[40] = outputFeature0[37] * w;
             lines[41] = outputFeature0[36] * h;
             lines[42] = outputFeature0[43] * w;
             lines[43] = outputFeature0[42] * h;
         }
 
-        if(outputFeature0[44] > 0.45 && outputFeature0[50] > 0.45){
+        if(outputFeature0[44] > accuracy && outputFeature0[50] > accuracy){
             lines[44] = outputFeature0[43] * w;
             lines[45] = outputFeature0[42] * h;
             lines[46] = outputFeature0[49] * w;
@@ -213,7 +227,7 @@ public class ImagesUtils {
         int x = 0;
 
         while(x <= 49){
-            if(outputFeature0[x+2] > 0.45 ){
+            if(outputFeature0[x+2] > accuracy ){
                 canvas.drawCircle(outputFeature0[x+1] * w, outputFeature0[x] * h, 10f, paint);
             }
             x += 3;
@@ -221,7 +235,7 @@ public class ImagesUtils {
 
         float[] lines = new float[48];
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[20] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[20] > accuracy){
             lines[0] = outputFeature0[16] * w;
             lines[1] = outputFeature0[15] * h;
             lines[2] = outputFeature0[19] * w;
@@ -229,77 +243,77 @@ public class ImagesUtils {
         }
 
 
-        if(outputFeature0[20] > 0.45 && outputFeature0[26] > 0.45){
+        if(outputFeature0[20] > accuracy && outputFeature0[26] > accuracy){
             lines[4] = outputFeature0[19] * w;
             lines[5] = outputFeature0[18] * h;
             lines[6] = outputFeature0[25] * w;
             lines[7] = outputFeature0[24] * h;
         }
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[23] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[23] > accuracy){
             lines[8] = outputFeature0[16] * w;
             lines[9] = outputFeature0[15] * h;
             lines[10] = outputFeature0[22] * w;
             lines[11] = outputFeature0[21] * h;
         }
 
-        if(outputFeature0[23] > 0.45 && outputFeature0[29] > 0.45){
+        if(outputFeature0[23] > accuracy && outputFeature0[29] > accuracy){
             lines[12] = outputFeature0[22] * w;
             lines[13] = outputFeature0[21] * h;
             lines[14] = outputFeature0[28] * w;
             lines[15] = outputFeature0[27] * h;
         }
 
-        if(outputFeature0[26] > 0.45 && outputFeature0[32] > 0.45){
+        if(outputFeature0[26] > accuracy && outputFeature0[32] > accuracy){
             lines[16] = outputFeature0[25] * w;
             lines[17] = outputFeature0[24] * h;
             lines[18] = outputFeature0[31] * w;
             lines[19] = outputFeature0[30] * h;
         }
 
-        if(outputFeature0[35] > 0.45 && outputFeature0[38] > 0.45){
+        if(outputFeature0[35] > accuracy && outputFeature0[38] > accuracy){
             lines[20] = outputFeature0[34] * w;
             lines[21] = outputFeature0[33] * h;
             lines[22] = outputFeature0[37] * w;
             lines[23] = outputFeature0[36] * h;
         }
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[35] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[35] > accuracy){
             lines[24] = outputFeature0[16] * w;
             lines[25] = outputFeature0[15] * h;
             lines[26] = outputFeature0[34] * w;
             lines[27] = outputFeature0[33] * h;
         }
 
-        if(outputFeature0[20] > 0.45 && outputFeature0[38] > 0.45){
+        if(outputFeature0[20] > accuracy && outputFeature0[38] > accuracy){
             lines[28] = outputFeature0[19] * w;
             lines[29] = outputFeature0[18] * h;
             lines[30] = outputFeature0[37] * w;
             lines[31] = outputFeature0[36] * h;
         }
 
-        if(outputFeature0[35] > 0.45 && outputFeature0[41] > 0.45){
+        if(outputFeature0[35] > accuracy && outputFeature0[41] > accuracy){
             lines[32] = outputFeature0[34] * w;
             lines[33] = outputFeature0[33] * h;
             lines[34] = outputFeature0[40] * w;
             lines[35] = outputFeature0[39] * h;
         }
 
-        if(outputFeature0[41] > 0.45 && outputFeature0[47] > 0.45){
+        if(outputFeature0[41] > accuracy && outputFeature0[47] > accuracy){
             lines[36] = outputFeature0[40] * w;
             lines[37] = outputFeature0[39] * h;
             lines[38] = outputFeature0[46] * w;
             lines[39] = outputFeature0[45] * h;
         }
 
-        if(outputFeature0[38] > 0.45 && outputFeature0[44] > 0.45){
+        if(outputFeature0[38] > accuracy && outputFeature0[44] > accuracy){
             lines[40] = outputFeature0[37] * w;
             lines[41] = outputFeature0[36] * h;
             lines[42] = outputFeature0[43] * w;
             lines[43] = outputFeature0[42] * h;
         }
 
-        if(outputFeature0[44] > 0.45 && outputFeature0[50] > 0.45){
+        if(outputFeature0[44] > accuracy && outputFeature0[50] > accuracy){
             lines[44] = outputFeature0[43] * w;
             lines[45] = outputFeature0[42] * h;
             lines[46] = outputFeature0[49] * w;
@@ -368,7 +382,7 @@ public class ImagesUtils {
 
         //9 10 11   12 13 14
 
-//        if(outputFeature0[2] > 0.45){
+//        if(outputFeature0[2] > accuracy){
 //            double radius = Math.sqrt((outputFeature0[9] - outputFeature0[12]) * h *(outputFeature0[9] - outputFeature0[12])  * h + (outputFeature0[10] - outputFeature0[13])  * w *(outputFeature0[10] - outputFeature0[13])  * w );
 //
 //            Log.i("Radius", String.valueOf(radius));
@@ -381,7 +395,7 @@ public class ImagesUtils {
 //        }
 
         while(x <= 49){
-            if(outputFeature0[x+2] > 0.45 ){
+            if(outputFeature0[x+2] > accuracy ){
                 canvas.drawCircle(outputFeature0[x+1] * w, outputFeature0[x] * h, 10f, paint);
             }
             x += 3;
@@ -416,7 +430,7 @@ public class ImagesUtils {
 
         float[] lines = new float[48];
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[20] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[20] > accuracy){
             lines[0] = outputFeature0[16] * w;
             lines[1] = outputFeature0[15] * h;
             lines[2] = outputFeature0[19] * w;
@@ -424,77 +438,77 @@ public class ImagesUtils {
         }
 
 
-        if(outputFeature0[20] > 0.45 && outputFeature0[26] > 0.45){
+        if(outputFeature0[20] > accuracy && outputFeature0[26] > accuracy){
             lines[4] = outputFeature0[19] * w;
             lines[5] = outputFeature0[18] * h;
             lines[6] = outputFeature0[25] * w;
             lines[7] = outputFeature0[24] * h;
         }
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[23] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[23] > accuracy){
             lines[8] = outputFeature0[16] * w;
             lines[9] = outputFeature0[15] * h;
             lines[10] = outputFeature0[22] * w;
             lines[11] = outputFeature0[21] * h;
         }
 
-        if(outputFeature0[23] > 0.45 && outputFeature0[29] > 0.45){
+        if(outputFeature0[23] > accuracy && outputFeature0[29] > accuracy){
             lines[12] = outputFeature0[22] * w;
             lines[13] = outputFeature0[21] * h;
             lines[14] = outputFeature0[28] * w;
             lines[15] = outputFeature0[27] * h;
         }
 
-        if(outputFeature0[26] > 0.45 && outputFeature0[32] > 0.45){
+        if(outputFeature0[26] > accuracy && outputFeature0[32] > accuracy){
             lines[16] = outputFeature0[25] * w;
             lines[17] = outputFeature0[24] * h;
             lines[18] = outputFeature0[31] * w;
             lines[19] = outputFeature0[30] * h;
         }
 
-        if(outputFeature0[35] > 0.45 && outputFeature0[38] > 0.45){
+        if(outputFeature0[35] > accuracy && outputFeature0[38] > accuracy){
             lines[20] = outputFeature0[34] * w;
             lines[21] = outputFeature0[33] * h;
             lines[22] = outputFeature0[37] * w;
             lines[23] = outputFeature0[36] * h;
         }
 
-        if(outputFeature0[17] > 0.45 && outputFeature0[35] > 0.45){
+        if(outputFeature0[17] > accuracy && outputFeature0[35] > accuracy){
             lines[24] = outputFeature0[16] * w;
             lines[25] = outputFeature0[15] * h;
             lines[26] = outputFeature0[34] * w;
             lines[27] = outputFeature0[33] * h;
         }
 
-        if(outputFeature0[20] > 0.45 && outputFeature0[38] > 0.45){
+        if(outputFeature0[20] > accuracy && outputFeature0[38] > accuracy){
             lines[28] = outputFeature0[19] * w;
             lines[29] = outputFeature0[18] * h;
             lines[30] = outputFeature0[37] * w;
             lines[31] = outputFeature0[36] * h;
         }
 
-        if(outputFeature0[35] > 0.45 && outputFeature0[41] > 0.45){
+        if(outputFeature0[35] > accuracy && outputFeature0[41] > accuracy){
             lines[32] = outputFeature0[34] * w;
             lines[33] = outputFeature0[33] * h;
             lines[34] = outputFeature0[40] * w;
             lines[35] = outputFeature0[39] * h;
         }
 
-        if(outputFeature0[41] > 0.45 && outputFeature0[47] > 0.45){
+        if(outputFeature0[41] > accuracy && outputFeature0[47] > accuracy){
             lines[36] = outputFeature0[40] * w;
             lines[37] = outputFeature0[39] * h;
             lines[38] = outputFeature0[46] * w;
             lines[39] = outputFeature0[45] * h;
         }
 
-        if(outputFeature0[38] > 0.45 && outputFeature0[44] > 0.45){
+        if(outputFeature0[38] > accuracy && outputFeature0[44] > accuracy){
             lines[40] = outputFeature0[37] * w;
             lines[41] = outputFeature0[36] * h;
             lines[42] = outputFeature0[43] * w;
             lines[43] = outputFeature0[42] * h;
         }
 
-        if(outputFeature0[44] > 0.45 && outputFeature0[50] > 0.45){
+        if(outputFeature0[44] > accuracy && outputFeature0[50] > accuracy){
             lines[44] = outputFeature0[43] * w;
             lines[45] = outputFeature0[42] * h;
             lines[46] = outputFeature0[49] * w;
@@ -502,6 +516,14 @@ public class ImagesUtils {
         }
 
         canvas.drawLines(lines, paint2);
+        return mutable;
+    }
+    public Bitmap drawPose(Bitmap bitmap, float[] outputFeature0, float[] outputFeature1){
+        Bitmap mutable = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        mutable = drawPose(mutable, outputFeature0);
+        mutable = drawPose(mutable, outputFeature1);
+
         return mutable;
     }
 

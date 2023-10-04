@@ -94,5 +94,18 @@
         android:layout_marginBottom="35dp"
         android:layout_marginEnd="30dp"/>
 
+<!--    <TextView-->
+<!--        android:id="@+id/angle"-->
+<!--        android:layout_width="35dp"-->
+<!--        android:layout_height="35dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginEnd="28dp"-->
+<!--        android:layout_marginBottom="81dp"-->
+<!--        android:background="@drawable/zoom_button_background"-->
+<!--        android:gravity="center"-->
+<!--        android:text="100"-->
+<!--        android:textSize="10dp" />-->
+
 
 </RelativeLayout>

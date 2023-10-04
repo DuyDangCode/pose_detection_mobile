@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.example.posedetection.custom_dialogs.SettingsRealtime;
 import com.example.posedetection.ml.LiteModelMovenetSingleposeLightningTfliteFloat164;
 import com.example.posedetection.utils.ImagesUtils;
+import com.example.posedetection.utils.PoseUtils;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.ImageProcessor;
@@ -83,6 +84,12 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
 
     private int typeCapture;
 
+    private double accuracy;
+
+
+
+
+
 
 
 
@@ -101,13 +108,15 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(getApplicationContext());
 
         typeCapture = getIntent().getIntExtra("type_capture", 0);
+        accuracy = (double) (getIntent().getIntExtra("accuracy", 45)) / 100;
 
 
         valueZoom = 1.0f;
 
 
+
         imageProcessor = new ImageProcessor.Builder().add(new ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR)).build();
-        imagesUtils = new ImagesUtils();
+        imagesUtils = new ImagesUtils(accuracy);
         try {
             model = LiteModelMovenetSingleposeLightningTfliteFloat164.newInstance(this);
         } catch (IOException e) {
@@ -121,7 +130,6 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
         captureBtn = findViewById(R.id.capture_button);
         imagesBtn = findViewById(R.id.images_button);
         zoomX2 = findViewById(R.id.zoomX2);
-
 
 
 
@@ -204,6 +212,9 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
                 Log.i("Output", String.valueOf(outputFeature0.length));
 
                 mutable = imagesUtils.drawPose(bitmap, outputFeature0);
+
+
+
                 imageView.setImageBitmap(mutable);
 
 
@@ -370,6 +381,7 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
                 this.finish();
                 Intent intent = new Intent(RealtimeProcessingActivity.this, SettingActivity.class);
                 intent.putExtra("name_activity", "rt");
+                intent.putExtra("accuracy", (int) (imagesUtils.getAccuracy() * 100));
                 startActivity(intent);
                 return true;
         }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -21,6 +22,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.TextureView;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.posedetection.ml.LiteModelMovenetSingleposeLightningTfliteFloat164;
 import com.example.posedetection.utils.ImagesUtils;
+import com.example.posedetection.utils.PoseUtils;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.ImageProcessor;
@@ -68,6 +72,10 @@ public class ImageProcessingActivity extends AppCompatActivity {
     private float valueZoom;
 
     private boolean isLock;
+    private double accuracy;
+    private int matchScore;
+    private int typeCapture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +88,13 @@ public class ImageProcessingActivity extends AppCompatActivity {
 
         isLock = false;
         valueZoom = 1.0f;
+        typeCapture = getIntent().getIntExtra("type_capture", 0);
+        accuracy = (double) (getIntent().getIntExtra("accuracy", 45)) / 100;
+        matchScore = getIntent().getIntExtra("match_score", 15);
+
 
         imageProcessor = new ImageProcessor.Builder().add(new ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR)).build();
-        imagesUtils = new ImagesUtils();
+        imagesUtils = new ImagesUtils(accuracy);;
         try {
             model = LiteModelMovenetSingleposeLightningTfliteFloat164.newInstance(this);
         } catch (IOException e) {
@@ -129,7 +141,7 @@ public class ImageProcessingActivity extends AppCompatActivity {
             }
         });
 
-        captureBtn.setOnClickListener(v->{capture(mutable, bitmap, outputFeature0);});
+        captureBtn.setOnClickListener(v->{capture(mutable);});
 
         lockBtn.setOnClickListener(v->{lock();});
         openBtn.setOnClickListener(v->{lock();});
@@ -182,6 +194,7 @@ public class ImageProcessingActivity extends AppCompatActivity {
                    mutable = imagesUtils.drawPose(bitmap, outputFeature0);
                    imageView.setImageBitmap(mutable);
                }else{
+                   //mutable = imagesUtils.drawPose(bitmap, outputFeatureLock, outputFeature0);
                    mutable = imagesUtils.drawPose(bitmap, outputFeatureLock);
                    imageView.setImageBitmap(mutable);
                    if(check()){
@@ -201,6 +214,12 @@ public class ImageProcessingActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.realtime_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onDestroy() {
@@ -259,22 +278,35 @@ public class ImageProcessingActivity extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+
+            case R.id.realtime_settings:
+                this.finish();
+                Intent intent = new Intent(ImageProcessingActivity.this, SettingActivity.class);
+                intent.putExtra("name_activity", "ip");
+                intent.putExtra("accuracy", (int) (accuracy * 100));
+                intent.putExtra("match_score", matchScore);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void capture(Bitmap capture_bitmap, Bitmap bm, float[] results){
-
-//        if(imagesUtils.capture(capture_bitmap))
-//            Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
-//
-//        if(imagesUtils.capturePose(capture_bitmap, outputFeature0)){}
-//            Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
-
-        if(imagesUtils.captureAllTypes(capture_bitmap, bm, results)){}
-        Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
-
-
+    private void capture(Bitmap capture_bitmap){
+        switch (typeCapture)
+        {
+            case 0:
+                if(imagesUtils.capture(capture_bitmap, bitmap))
+                    Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                if(imagesUtils.capturePose(capture_bitmap, outputFeature0)){}
+                Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                if(imagesUtils.captureAllTypes(capture_bitmap, bitmap, outputFeature0)){}
+                Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private void lock(){
@@ -296,21 +328,31 @@ public class ImageProcessingActivity extends AppCompatActivity {
 
     private boolean check(){
         boolean result = true;
-        int x = 0;
-        while(x <= 49){
-            Log.i("checkX", String.valueOf(outputFeature0[x+1]));
-            Log.i("checkY", String.valueOf(outputFeatureLock[x+1]));
+        float h = bitmap.getHeight();
+        float w = bitmap.getWidth();
+        PoseUtils poseUtils = new PoseUtils();
+//        int x = 0;
+//        while(x <= 49){
+//            Log.i("checkX", String.valueOf(outputFeature0[x+1]));
+//            Log.i("checkY", String.valueOf(outputFeatureLock[x+1]));
+//
+//            if (Math.abs(outputFeature0[x+1] * 100 - outputFeatureLock[x+1] * 100) > 8 || Math.abs(outputFeature0[x] * 100 -outputFeatureLock[x] * 100) > 8 ){
+//
+//                result = false;
+//                break;
+//            }
+//
+//
+//
+//            x += 3;
+//        }
 
-            if (Math.abs(outputFeature0[x+1] * 100 - outputFeatureLock[x+1] * 100) > 8 || Math.abs(outputFeature0[x] * 100 -outputFeatureLock[x] * 100) > 8 ){
-
-                result = false;
-                break;
-            }
-
-            x += 3;
+        if (poseUtils.comparePoseAngle(outputFeature0, outputFeatureLock, w, h, accuracy, matchScore)){
+            return true;
         }
+        return false;
 
-        return  result;
+        //return  result;
     }
 
     private Rect zoom(){

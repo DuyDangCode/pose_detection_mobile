@@ -66,6 +66,7 @@
             android:id="@+id/donate"
             app:backgroundTint="@null"
             android:layout_marginBottom="10dp"
+            android:visibility="gone"
             android:background="@drawable/button_background"/>
 
 
