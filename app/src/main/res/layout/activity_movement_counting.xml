@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RealtimeProcessingActivity">
-
+    tools:context=".MovementCountingActivity">
     <RelativeLayout
         android:layout_width="409dp"
         android:layout_height="544dp"
@@ -22,11 +21,13 @@
             android:layout_height="540dp"
             android:id="@+id/image"/>
     </RelativeLayout>
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/images_button"
-        android:src="@drawable/baseline_image_50"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/number"
+        android:text="0"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="35dp"
@@ -66,21 +67,4 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="35dp"
         android:layout_marginEnd="30dp"/>
-
-<!--    <TextView-->
-<!--        android:id="@+id/angle"-->
-<!--        android:layout_width="35dp"-->
-<!--        android:layout_height="35dp"-->
-<!--        android:textColor="@color/red"-->
-<!--        android:textStyle="bold"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginEnd="28dp"-->
-<!--        android:layout_marginBottom="81dp"-->
-<!--        android:background="@drawable/zoom_button_background"-->
-<!--        android:gravity="center"-->
-<!--        android:text="100"-->
-<!--        android:textSize="10dp" />-->
-
-
 </RelativeLayout>

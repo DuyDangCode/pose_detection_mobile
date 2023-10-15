@@ -4,15 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.ColorDrawable;
@@ -22,9 +18,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -33,13 +27,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.TextureView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.posedetection.custom_dialogs.SettingsRealtime;
 import com.example.posedetection.ml.LiteModelMovenetSingleposeLightningTfliteFloat164;
 import com.example.posedetection.utils.ImagesUtils;
 import com.example.posedetection.utils.PoseUtils;
@@ -52,11 +43,9 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class RealtimeProcessingActivity extends AppCompatActivity {
-
+public class MovementCountingActivity extends AppCompatActivity {
     private ImageView imageView;
     private Bitmap bitmap;
     private TextureView textureView;
@@ -71,20 +60,26 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
 
 
 
-    private ImageView cameraBtn, captureBtn, imagesBtn;
+    private ImageView cameraBtn, captureBtn;
     private int typeCamera = 0;
 
     private ImagesUtils imagesUtils;
+    private PoseUtils poseUtils;
     private Bitmap mutable;
     private float[] outputFeature0;
 
-    private TextView zoomX2;
+    private TextView zoomX2Tv, numberTv;
 
     private float valueZoom;
 
     private int typeCapture;
 
     private double accuracy;
+
+    private int number;
+    private boolean status;
+
+
 
 
 
@@ -96,7 +91,7 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_realtime_processing);
+        setContentView(R.layout.activity_movement_counting);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.baseline_keyboard_backspace_30);
@@ -112,11 +107,14 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
 
 
         valueZoom = 1.0f;
+        number = 0;
+        status = false;
 
 
 
         imageProcessor = new ImageProcessor.Builder().add(new ResizeOp(192, 192, ResizeOp.ResizeMethod.BILINEAR)).build();
         imagesUtils = new ImagesUtils(accuracy);
+        poseUtils = new PoseUtils();
         try {
             model = LiteModelMovenetSingleposeLightningTfliteFloat164.newInstance(this);
         } catch (IOException e) {
@@ -128,19 +126,19 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
         imageView = findViewById(R.id.image);
         cameraBtn = findViewById(R.id.change_camera_button);
         captureBtn = findViewById(R.id.capture_button);
-        imagesBtn = findViewById(R.id.images_button);
-        zoomX2 = findViewById(R.id.zoomX2);
+        numberTv = findViewById(R.id.number);
+        zoomX2Tv = findViewById(R.id.zoomX2);
 
 
 
-        zoomX2.setOnClickListener(v->{
+        zoomX2Tv.setOnClickListener(v->{
             try {
                 if(valueZoom == 1){
-                    zoomX2.setTextColor(Color.BLACK);
+                    zoomX2Tv.setTextColor(Color.BLACK);
                     valueZoom = 2.0f;
                     openCamera();
                 }else{
-                    zoomX2.setTextColor(Color.GRAY);
+                    zoomX2Tv.setTextColor(Color.GRAY);
                     valueZoom = 1.0f;
                     openCamera();
                 }
@@ -164,7 +162,7 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
         });
 
         captureBtn.setOnClickListener(v->{capture(mutable);});
-        imagesBtn.setOnClickListener(v->{imageBtnClick();});
+
 
 
         handlerThread = new HandlerThread("videoThread");
@@ -208,16 +206,22 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
 
                 LiteModelMovenetSingleposeLightningTfliteFloat164.Outputs outputs = model.process(inputFeature0);
                 outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
-                for(int i = 0; i < 51; i++){
-                    Log.i("outputFeature0" + i, String.valueOf(outputFeature0[i]));
+
+                boolean cResult = poseUtils.compareExercise(0, outputFeature0 , bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
+
+//                for(int i = 0; i < 51; i++){
+//                    Log.i("outputFeature0" + i, String.valueOf(outputFeature0[i]));
+//                }
+//
+//                Log.i("Output", String.valueOf(outputFeature0.length));
+
+                if(cResult != status){
+                    number++;
+                    status = cResult;
+                    numberTv.setText(String.valueOf(number));
                 }
 
-                Log.i("Output", String.valueOf(outputFeature0.length));
-
                 mutable = imagesUtils.drawPose(bitmap, outputFeature0);
-
-
-
                 imageView.setImageBitmap(mutable);
 
 
@@ -305,27 +309,14 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
                 break;
             case 1:
                 if(imagesUtils.capturePose(capture_bitmap, outputFeature0)){}
-                    Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
                 if(imagesUtils.captureAllTypes(capture_bitmap, bitmap, outputFeature0)){}
-                    Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Image was saved !!!", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
-
-
-
-
-    //error
-    private void imageBtnClick() {
-
-        Intent intent = new Intent(RealtimeProcessingActivity.this, GalleryActivity.class);
-        startActivity(intent);
-
-    }
-
-
 
     private Rect zoom(){
 
@@ -379,13 +370,6 @@ public class RealtimeProcessingActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                return true;
-            case R.id.realtime_settings:
-                this.finish();
-                Intent intent = new Intent(RealtimeProcessingActivity.this, SettingActivity.class);
-                intent.putExtra("name_activity", "rt");
-                intent.putExtra("accuracy", (int) (imagesUtils.getAccuracy() * 100));
-                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

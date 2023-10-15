@@ -38,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
     private TextView accuracyTv;
     private TextView matchScoreTv;
 
-    private LinearLayout matchScoreLayout;
+    private LinearLayout deviationAngleLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,7 @@ public class SettingActivity extends AppCompatActivity {
         matchScoreSb = findViewById(R.id.match_score_seekbar);
         accuracyTv = findViewById(R.id.accuracy_textView);
         matchScoreTv = findViewById(R.id.match_score_textView);
-        matchScoreLayout = findViewById(R.id.match_score_layout);
+        deviationAngleLayout = findViewById(R.id.deviation_angle_layout);
 
         accuracySb.setProgress(getIntent().getIntExtra("accuracy", 45));
         accuracyTv.setText(String.valueOf(accuracySb.getProgress()));
@@ -75,7 +75,7 @@ public class SettingActivity extends AppCompatActivity {
 
         switch (name_activity){
             case "ip":
-                matchScoreLayout.setVisibility(View.VISIBLE);
+                deviationAngleLayout.setVisibility(View.VISIBLE);
                 matchScoreSb.setProgress(getIntent().getIntExtra("match_score", 15));
                 matchScoreTv.setText(String.valueOf(matchScoreSb.getProgress()));
 

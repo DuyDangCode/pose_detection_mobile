@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private ImageView  galleryBtn, imageProcessingBtn, realtimeProcessingBtn;
+    private ImageView  galleryBtn, imageProcessingBtn, realtimeProcessingBtn, exercisesBtn, videoBtn;
 
 
 
@@ -80,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
         imageProcessingBtn = findViewById(R.id.image_processing_button);
         realtimeProcessingBtn = findViewById(R.id.realtime_processing_button);
         galleryBtn = findViewById(R.id.gallery_button);
+        exercisesBtn = findViewById(R.id.exercises_button);
 
 
         imageProcessingBtn.setOnClickListener(v->{imageProcessingBtnClick();});
         realtimeProcessingBtn.setOnClickListener(v->{realtimeProcessingBtnClick();});
         galleryBtn.setOnClickListener(v->{galleryBtnClick();});
+        exercisesBtn.setOnClickListener(v->{exercisesBtnClick();});
 
 
 
@@ -101,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void realtimeProcessingBtnClick(){
         Intent i = new Intent(MainActivity.this, RealtimeProcessingActivity.class);
+        startActivity(i);
+    }
+    private void exercisesBtnClick(){
+        Intent i = new Intent(MainActivity.this, ExercieseActivity.class);
         startActivity(i);
     }
 
