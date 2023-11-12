@@ -8,7 +8,7 @@ public class PoseUtils {
 
     private int pos;
 
-    private double[] beforesQuatDataDouble = {0.24618372, 0.44560713, 0.62988067, 0.23396163, 0.46104318, 0.50688237, 0.232342, 0.43523976, 0.42416012, 0.23699509, 0.4801659, 0.55332583, 0.23327829, 0.4234599, 0.6199736, 0.29141235, 0.51602304, 0.66487217, 0.29881406, 0.3958945, 0.63296914, 0.38722798, 0.5272072, 0.64210606, 0.39040232, 0.36319387, 0.72105163, 0.3419273, 0.47450575, 0.4021317, 0.3358771, 0.4261273, 0.38905644, 0.47829166, 0.49256542, 0.74760985, 0.47679606, 0.42187268, 0.70598865, 0.6092493, 0.50942767, 0.6465704, 0.61139697, 0.40834954, 0.7658154, 0.7339994, 0.5272413, 0.71505916, 0.73359287, 0.3880347, 0.6622772};
+    private double[] beforeSquatData = {0.24618372, 0.44560713, 0.62988067, 0.23396163, 0.46104318, 0.50688237, 0.232342, 0.43523976, 0.42416012, 0.23699509, 0.4801659, 0.55332583, 0.23327829, 0.4234599, 0.6199736, 0.29141235, 0.51602304, 0.66487217, 0.29881406, 0.3958945, 0.63296914, 0.38722798, 0.5272072, 0.64210606, 0.39040232, 0.36319387, 0.72105163, 0.3419273, 0.47450575, 0.4021317, 0.3358771, 0.4261273, 0.38905644, 0.47829166, 0.49256542, 0.74760985, 0.47679606, 0.42187268, 0.70598865, 0.6092493, 0.50942767, 0.6465704, 0.61139697, 0.40834954, 0.7658154, 0.7339994, 0.5272413, 0.71505916, 0.73359287, 0.3880347, 0.6622772};
     private double[] afterSquatData = {0.31468043, 0.533374, 0.57823414, 0.3024226, 0.55012834, 0.745348, 0.3024454, 0.52183306, 0.5342776, 0.31196243, 0.5677683, 0.47475922, 0.31064096, 0.5057582, 0.38257658, 0.37646022, 0.5942757, 0.62497723, 0.37852684, 0.4806342, 0.44137672, 0.4635752, 0.61400676, 0.40688592, 0.4548783, 0.4585406, 0.54833555, 0.38006657, 0.5649841, 0.36667186, 0.38520545, 0.5125038, 0.26397076, 0.5267825, 0.5784649, 0.55617267, 0.52688855, 0.50201076, 0.5299878, 0.49658036, 0.61525315, 0.60120034, 0.48450276, 0.45049173, 0.62641823, 0.59924614, 0.58979356, 0.35838744, 0.59772635, 0.46445137, 0.40183723};
 
     private float[] convertDoubleArr2FloatArr(double[] arr){
@@ -25,19 +25,18 @@ public class PoseUtils {
         this.pos = 0;
     }
 
-    public boolean compareExercise(int type, float[] p, float w, float h, double accuracy, int matchScore){
+    public boolean compareExercise(int type, boolean isBefore,float[] p, float w, float h, double accuracy, int matchScore){
         boolean result = false;
         switch (type){
             case 0:
-                result =  compareSquat(p,w,h,accuracy,matchScore);
+                result =  compareSquat(isBefore, p, w, h, accuracy, matchScore);
                 break;
-
         }
         return result;
     }
 
-    private boolean compareSquat(float[] p, float w, float h, double accuracy, int matchScore){
-        return comparePoseAngle(convertDoubleArr2FloatArr(afterSquatData), p, w, h, accuracy, matchScore);
+    private boolean compareSquat(boolean isBefore ,float[] p, float w, float h, double accuracy, int matchScore){
+        return isBefore ? comparePoseAngle(convertDoubleArr2FloatArr(beforeSquatData), p, w, h, accuracy, matchScore) : comparePoseAngle(convertDoubleArr2FloatArr(afterSquatData), p, w, h, accuracy, matchScore);
     }
 
     public boolean comparePoseAngle(float[] p1, float[] p2, float w, float h, double accuracy, int matchScore){

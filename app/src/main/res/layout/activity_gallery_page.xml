@@ -14,13 +14,30 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 
-    <Gallery
-        android:id="@+id/gallery"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:unselectedAlpha="50"
-        android:layout_gravity="bottom"/>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:rotation="180"
+          android:id="@+id/prevBtn"
+          android:layout_marginLeft="30dp"
+          android:src="@drawable/baseline_double_arrow_50" />
+      <Space
+          android:layout_width="20dp"
+          android:layout_height="wrap_content"/>
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:id="@+id/nextBtn"
+          android:layout_marginRight="30dp"
+          android:src="@drawable/baseline_double_arrow_50"/>
 
 
+  </RelativeLayout>
 
 </LinearLayout>

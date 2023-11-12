@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -16,7 +17,9 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -24,6 +27,8 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.example.posedetection.ml.LiteModelMovenetSingleposeLightningTfliteFloat164;
 
@@ -39,6 +44,9 @@ import java.util.List;
 
 public class VideoProcessingActivity extends AppCompatActivity {
 
+//    private VideoView vv;
+    private int idExercise;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,32 @@ public class VideoProcessingActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
+
+        Intent intent = getIntent();
+        idExercise = intent.getIntExtra("id_exercise", 0);
+
+//        vv = findViewById(R.id.videoView);
+
+        //Creating MediaController
+//        MediaController mediaController= new MediaController(this);
+//        mediaController.setAnchorView(vv);
+
+        //specify the location of media file
+        Uri uri=Uri.parse(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString() +  "/pose-detection-videos/squat.mp4");
+        Log.i("uri", uri.toString());
+
+        //Setting MediaController and URI, then starting the videoView
+//        vv.setMediaController(mediaController);
+//        vv.setVideoURI(uri);
+//        vv.requestFocus();
+//        vv.start();
+
+
+
+
+
+
     }
 
     @Override
@@ -59,5 +93,4 @@ public class VideoProcessingActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

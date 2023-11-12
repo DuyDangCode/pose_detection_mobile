@@ -12,7 +12,9 @@ import android.widget.Button;
 
 public class ExercieseActivity extends AppCompatActivity {
 
-    private Button squartBtn, pushUpBtn, pullUpBtn;
+    private Button squartBtn;
+//    private Button  pushUpBtn, pullUpBtn;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +29,28 @@ public class ExercieseActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         squartBtn = findViewById(R.id.squat);
-        pushUpBtn = findViewById(R.id.pushup);
-        pullUpBtn = findViewById(R.id.pullup);
+//        pushUpBtn = findViewById(R.id.pushup);
+//        pullUpBtn = findViewById(R.id.pullup);
 
 
         squartBtn.setOnClickListener(v->{btnOnclick(0);});
-        pushUpBtn.setOnClickListener(v->{btnOnclick(1);});
-        pullUpBtn.setOnClickListener(v->{btnOnclick(2);});
+//        pushUpBtn.setOnClickListener(v->{btnOnclick(1);});
+//        pullUpBtn.setOnClickListener(v->{btnOnclick(2);});
 
+        Intent intent = getIntent();
+        id = intent.getIntExtra("id", 0);
 
     }
 
 
     private void btnOnclick(int type){
-        Intent intent = new Intent(ExercieseActivity.this, MovementCountingActivity.class);
+        Intent intent;
+
+        if(id == 0){
+            intent = new Intent(ExercieseActivity.this, MovementCountingActivity.class);
+        }else{
+            intent = new Intent(ExercieseActivity.this, VideoProcessingActivity.class);
+        }
 
         // 0 squart
         // 1 push up

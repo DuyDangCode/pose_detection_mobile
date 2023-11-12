@@ -527,12 +527,18 @@ public class ImagesUtils {
         return mutable;
     }
 
-    public Bitmap loadImage(String path){
+    public Bitmap loadImage(String path, int index){
 
+
+        File f = new File(path);
+        Log.i("Path image", path);
+        File[] files = f.listFiles();
+
+
+        Log.i("Files length", String.valueOf(files.length));
         try {
-            //File file = new File(path, "profile.jpg");
-            File file = new File(path);
-            return BitmapFactory.decodeStream(new FileInputStream(file));
+
+            return BitmapFactory.decodeStream(new FileInputStream(files[index].getPath()));
         }
         catch (FileNotFoundException e)
         {
@@ -543,18 +549,18 @@ public class ImagesUtils {
 
     }
 
-    public List<Bitmap> loadImages(String path){
-        List<Bitmap> bitmaps = new ArrayList<>();
-        File f = new File(path);
-        File[] files = f.listFiles();
-        //Log.i("Number of images: ", String.valueOf(files.length));
-        for (int i=0; i < 5; i++)
-        {
-            bitmaps.add(loadImage(files[i].getPath()));
-            Log.i("Load image", "success");
-        }
-
-        return bitmaps;
-    }
+//    public List<Bitmap> loadImages(String path){
+//        List<Bitmap> bitmaps = new ArrayList<>();
+//        File f = new File(path);
+//        File[] files = f.listFiles();
+//
+//        for (int i=0; i < 5; i++)
+//        {
+//            bitmaps.add(loadImage(files[i].getPath(0)));
+//            Log.i("Load image", "success");
+//        }
+//
+//        return bitmaps;
+//    }
 
 }

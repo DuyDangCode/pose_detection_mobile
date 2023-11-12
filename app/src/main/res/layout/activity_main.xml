@@ -42,6 +42,18 @@
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"/>
 
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/realtime_processing_button"
+                android:src="@drawable/baseline_control_camera_50"/>
+
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"/>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,28 +68,18 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/realtime_processing_button"
-                android:src="@drawable/baseline_control_camera_50"/>
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/exercises_button"
                 android:src="@drawable/baseline_fitness_center_50"/>
 
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
+<!--            <Space-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/video_processing_button"
-                android:src="@drawable/baseline_videocam_50"/>
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/video_processing_button"-->
+<!--                android:src="@drawable/baseline_videocam_50"/>-->
         </LinearLayout>
 
         <Button

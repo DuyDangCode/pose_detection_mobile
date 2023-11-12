@@ -8,24 +8,30 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.posedetection.utils.ImagesUtils;
 
+import java.io.File;
 import java.util.List;
 
 public class GalleryActivity extends AppCompatActivity {
 
-    private Gallery gallery;
+
     private ImageView img;
 
     private ImagesUtils imagesUtils;
-    private CustomizedGalleryAdapter customGalleryAdapter;
+    private int index, max;
+
+    private ImageView prevBtn, nextBtn;
+    private String uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,31 +45,50 @@ public class GalleryActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
 
-        gallery = findViewById(R.id.gallery);
+        index = 0;
+
+        prevBtn = findViewById(R.id.prevBtn);
+        nextBtn = findViewById(R.id.nextBtn);
         img = findViewById(R.id.imageView);
         imagesUtils = new ImagesUtils();
-        String uri = Environment.getExternalStoragePublicDirectory(
+        uri = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES).toString() +  "/pose-detection-images/";
-        List<Bitmap> l =  imagesUtils.loadImages(uri);
-        customGalleryAdapter = new CustomizedGalleryAdapter(getApplicationContext(), l);
+        File f = new File(uri);
+        File[] files = f.listFiles();
+        max = files.length;
+
+        ///storage/emulated/0/Pictures/pose-detection-images/
+
+        Log.i("Uri", uri);
 
 
-        gallery.setAdapter(customGalleryAdapter);
 
-        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                img.setImageBitmap(customGalleryAdapter.getImages(i));
+
+        img.setImageBitmap(imagesUtils.loadImage(uri, index));
+        prevBtn.setOnClickListener(v-> changeImage(true));
+        nextBtn.setOnClickListener(v->changeImage(false));
+
+
+
+
+
+
+    }
+
+    private void changeImage(boolean type){
+        if(type){
+            index--;
+            if(index == -1) {
+                index = max-1;
             }
-        });
 
-        img.setImageBitmap(l.get(0));
-
-
-
-
-
-
+        }else {
+            index++;
+            if(index == max){
+                index = 0;
+            }
+        }
+        img.setImageBitmap(imagesUtils.loadImage(uri, index));
     }
 
     @Override

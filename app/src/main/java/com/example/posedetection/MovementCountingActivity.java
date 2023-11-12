@@ -44,6 +44,9 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MovementCountingActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -60,7 +63,7 @@ public class MovementCountingActivity extends AppCompatActivity {
 
 
 
-    private ImageView cameraBtn, captureBtn;
+    private ImageView cameraBtn, resetBtn;
     private int typeCamera = 0;
 
     private ImagesUtils imagesUtils;
@@ -77,7 +80,8 @@ public class MovementCountingActivity extends AppCompatActivity {
     private double accuracy;
 
     private int number;
-    private boolean status;
+    private boolean cResultBefore;
+    private boolean cResultAfter;
 
 
 
@@ -108,7 +112,7 @@ public class MovementCountingActivity extends AppCompatActivity {
 
         valueZoom = 1.0f;
         number = 0;
-        status = false;
+        cResultBefore = cResultAfter = false;
 
 
 
@@ -125,7 +129,7 @@ public class MovementCountingActivity extends AppCompatActivity {
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         imageView = findViewById(R.id.image);
         cameraBtn = findViewById(R.id.change_camera_button);
-        captureBtn = findViewById(R.id.capture_button);
+        resetBtn = findViewById(R.id.reset_button);
         numberTv = findViewById(R.id.number);
         zoomX2Tv = findViewById(R.id.zoomX2);
 
@@ -161,7 +165,7 @@ public class MovementCountingActivity extends AppCompatActivity {
             }
         });
 
-        captureBtn.setOnClickListener(v->{capture(mutable);});
+        resetBtn.setOnClickListener(v->{resetCounting();});
 
 
 
@@ -207,19 +211,27 @@ public class MovementCountingActivity extends AppCompatActivity {
                 LiteModelMovenetSingleposeLightningTfliteFloat164.Outputs outputs = model.process(inputFeature0);
                 outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
 
-                boolean cResult = poseUtils.compareExercise(0, outputFeature0 , bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
-
+                if(!cResultBefore){
+                    cResultBefore = poseUtils.compareExercise(0, true,  outputFeature0 , bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
+                    cResultAfter = false;
+                }
+                else {
+                    cResultAfter = poseUtils.compareExercise(0, false, outputFeature0, bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
+                    if(cResultBefore && cResultAfter){
+                        number++;
+                        numberTv.setText(String.valueOf(number));
+                        cResultBefore = false;
+                    }
+                }
 //                for(int i = 0; i < 51; i++){
 //                    Log.i("outputFeature0" + i, String.valueOf(outputFeature0[i]));
 //                }
 //
 //                Log.i("Output", String.valueOf(outputFeature0.length));
 
-                if(cResult != status){
-                    number++;
-                    status = cResult;
-                    numberTv.setText(String.valueOf(number));
-                }
+
+
+
 
                 mutable = imagesUtils.drawPose(bitmap, outputFeature0);
                 imageView.setImageBitmap(mutable);
@@ -317,6 +329,14 @@ public class MovementCountingActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+    private void resetCounting(){
+        number = 0;
+        numberTv.setText(String.valueOf(number));
+        cResultBefore = false;
+    }
+
 
     private Rect zoom(){
 
