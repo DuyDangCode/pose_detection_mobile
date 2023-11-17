@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.posedetection.utils.ImagesUtils;
@@ -32,6 +33,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     private ImageView prevBtn, nextBtn;
     private String uri;
+    private TextView nameImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +48,12 @@ public class GalleryActivity extends AppCompatActivity {
 
 
         index = 0;
+        makeDir();
 
         prevBtn = findViewById(R.id.prevBtn);
         nextBtn = findViewById(R.id.nextBtn);
         img = findViewById(R.id.imageView);
+        nameImage = findViewById(R.id.nameImage);
         imagesUtils = new ImagesUtils();
         uri = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES).toString() +  "/pose-detection-images/";
@@ -61,18 +65,26 @@ public class GalleryActivity extends AppCompatActivity {
 
         Log.i("Uri", uri);
 
+        Bitmap temp = imagesUtils.loadImage(uri, index);
+        if(temp == null){
+            img.setImageDrawable(getResources().getDrawable(R.drawable.no_image_available));
+        }
+        else {
+            img.setImageBitmap(temp);
+            nameImage.setText(imagesUtils.getNameImage(uri, index));
+        }
 
 
-
-        img.setImageBitmap(imagesUtils.loadImage(uri, index));
         prevBtn.setOnClickListener(v-> changeImage(true));
         nextBtn.setOnClickListener(v->changeImage(false));
+    }
 
-
-
-
-
-
+    private void makeDir(){
+        File directory = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString() +  "/pose-detection-images/");
+        if(!directory.isDirectory()){
+            directory.mkdir();
+        }
     }
 
     private void changeImage(boolean type){
@@ -89,6 +101,7 @@ public class GalleryActivity extends AppCompatActivity {
             }
         }
         img.setImageBitmap(imagesUtils.loadImage(uri, index));
+        nameImage.setText(imagesUtils.getNameImage(uri, index));
     }
 
     @Override

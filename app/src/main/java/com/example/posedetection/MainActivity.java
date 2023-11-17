@@ -24,6 +24,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -44,6 +45,7 @@ import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.image.ops.ResizeOp;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.Permission;
 import java.util.ArrayList;
@@ -90,11 +92,17 @@ public class MainActivity extends AppCompatActivity {
         exercisesBtn.setOnClickListener(v->{exercisesBtnClick();});
 
 
-
+        makeDir();
 
     }
 
-
+    private void makeDir(){
+        File directory = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString() +  "/pose-detection-images/");
+        if(!directory.isDirectory()){
+            directory.mkdir();
+        }
+    }
    private void galleryBtnClick(){
        Intent i = new Intent(MainActivity.this, GalleryActivity.class);
        startActivity(i);

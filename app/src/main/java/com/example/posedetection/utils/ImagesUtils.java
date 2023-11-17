@@ -534,8 +534,10 @@ public class ImagesUtils {
         Log.i("Path image", path);
         File[] files = f.listFiles();
 
+        if (files.length == 0)
+            return null;
 
-        Log.i("Files length", String.valueOf(files.length));
+
         try {
 
             return BitmapFactory.decodeStream(new FileInputStream(files[index].getPath()));
@@ -543,12 +545,19 @@ public class ImagesUtils {
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
-
     }
 
+    public String getNameImage (String path, int index){
+        File f = new File(path);
+        Log.i("Path image", path);
+        File[] files = f.listFiles();
+
+        if (files.length == 0)
+            return null;
+        return files[index].getName();
+    }
 //    public List<Bitmap> loadImages(String path){
 //        List<Bitmap> bitmaps = new ArrayList<>();
 //        File f = new File(path);
