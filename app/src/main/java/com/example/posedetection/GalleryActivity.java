@@ -88,20 +88,22 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     private void changeImage(boolean type){
-        if(type){
-            index--;
-            if(index == -1) {
-                index = max-1;
-            }
+        if(max!=0){
+            if(type){
+                index--;
+                if(index == -1) {
+                    index = max-1;
+                }
 
-        }else {
-            index++;
-            if(index == max){
-                index = 0;
+            }else {
+                index++;
+                if(index == max){
+                    index = 0;
+                }
             }
+            img.setImageBitmap(imagesUtils.loadImage(uri, index));
+            nameImage.setText(imagesUtils.getNameImage(uri, index));
         }
-        img.setImageBitmap(imagesUtils.loadImage(uri, index));
-        nameImage.setText(imagesUtils.getNameImage(uri, index));
     }
 
     @Override

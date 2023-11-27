@@ -83,6 +83,8 @@ public class MovementCountingActivity extends AppCompatActivity {
     private boolean cResultBefore;
     private boolean cResultAfter;
 
+    private int idExercise;
+
 
 
 
@@ -108,7 +110,7 @@ public class MovementCountingActivity extends AppCompatActivity {
 
         typeCapture = getIntent().getIntExtra("type_capture", 0);
         accuracy = (double) (getIntent().getIntExtra("accuracy", 45)) / 100;
-
+        idExercise = getIntent().getIntExtra("id_exercise", 0);
 
         valueZoom = 1.0f;
         number = 0;
@@ -212,11 +214,11 @@ public class MovementCountingActivity extends AppCompatActivity {
                 outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
 
                 if(!cResultBefore){
-                    cResultBefore = poseUtils.compareExercise(0, true,  outputFeature0 , bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
+                    cResultBefore = poseUtils.compareExercise(idExercise, true,  outputFeature0 , bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
                     cResultAfter = false;
                 }
                 else {
-                    cResultAfter = poseUtils.compareExercise(0, false, outputFeature0, bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
+                    cResultAfter = poseUtils.compareExercise(idExercise, false, outputFeature0, bitmap.getWidth(), bitmap.getHeight(), 0.45, 15);
                     if(cResultBefore && cResultAfter){
                         number++;
                         numberTv.setText(String.valueOf(number));

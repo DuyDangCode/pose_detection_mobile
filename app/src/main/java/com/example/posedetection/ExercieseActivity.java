@@ -12,7 +12,7 @@ import android.widget.Button;
 
 public class ExercieseActivity extends AppCompatActivity {
 
-    private Button squartBtn;
+    private Button squartBtn, seatedDumbbellBtn;
 //    private Button  pushUpBtn, pullUpBtn;
     private int id;
 
@@ -29,13 +29,14 @@ public class ExercieseActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         squartBtn = findViewById(R.id.squat);
-//        pushUpBtn = findViewById(R.id.pushup);
-//        pullUpBtn = findViewById(R.id.pullup);
+        seatedDumbbellBtn = findViewById(R.id.seated_dumbbell);
 
 
-        squartBtn.setOnClickListener(v->{btnOnclick(0);});
-//        pushUpBtn.setOnClickListener(v->{btnOnclick(1);});
-//        pullUpBtn.setOnClickListener(v->{btnOnclick(2);});
+
+        //navigate base on type exercise
+        squartBtn.setOnClickListener(v->{navigate(0);});
+        seatedDumbbellBtn.setOnClickListener(v->{navigate(1);});
+
 
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
@@ -43,7 +44,7 @@ public class ExercieseActivity extends AppCompatActivity {
     }
 
 
-    private void btnOnclick(int type){
+    private void navigate(int type){
         Intent intent;
 
         if(id == 0){
@@ -53,21 +54,10 @@ public class ExercieseActivity extends AppCompatActivity {
         }
 
         // 0 squart
-        // 1 push up
+        // 1 seated dumbbell
         // 2 pull up
 
-        switch (type){
-            case 0:
-                intent.putExtra("id_exercise", 0);
-                break;
-            case 1:
-                intent.putExtra("id_exercise", 1);
-                break;
-            case 2:
-                intent.putExtra("id_exercise", 2);
-                break;
-        }
-
+        intent.putExtra("id_exercise", type);
         startActivity(intent);
     }
 

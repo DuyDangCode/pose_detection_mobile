@@ -20,15 +20,15 @@
             app:backgroundTint="@null"
             android:background="@drawable/button_background"
             android:layout_margin="10dp"/>
-<!--        <Button-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="push up"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:textColor="@color/black"-->
-<!--            app:backgroundTint="@null"-->
-<!--            android:background="@drawable/button_background"-->
-<!--            android:id="@+id/pushup"/>-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seated Dumbbell"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_background"
+            android:id="@+id/seated_dumbbell"/>
 <!--        <Button-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
